@@ -22,17 +22,20 @@ class Game {
     while(!gameOver) {
       // Display game status
       this.updateGameStatus(round);
+      this.pause();
 
       // Decide who gets to attack in this round
       // Attack
       this.show(String.format("%s is attacking %s", this.player1.getName(), this.player2.getName()));
       this.player1.inflictDamageTo(this.player2);
+      this.pause();
       
       // Decide if the environment inflicts damage to the players
       // Inflict damage
       this.show(String.format("The %s is damaging players", this.environment.name()));
       this.environment.inflictDamageTo(this.player1);
       this.environment.inflictDamageTo(this.player2);
+      this.pause();
       
       // Determine if the game is over
       if (this.player1.isDefeated()) {
@@ -68,5 +71,17 @@ class Game {
 
   void show(String text) {
     System.out.println(text);
+  }
+
+  void pause() {
+    this.pause(1000);
+  }
+  void pause(int milliseconds) {
+    try{
+      Thread.sleep(milliseconds);
+      }
+    catch(Exception e) {
+      this.show(e.toString());
+    }
   }
 }
