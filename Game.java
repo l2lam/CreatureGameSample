@@ -24,31 +24,41 @@ class Game {
       this.updateGameStatus(round);
       this.pause();
 
-      // Decide who gets to attack in this round
+      // Do a round of combat
+      this.engageCombat();
+     
+      // Determine if the game is over
+      if (this.isGameOver()) break;
+      
+      round++;
+    }
+  }
+
+  void engageCombat() {
+      // TODO Decide who gets to attack in this round
       // Attack
       this.show(String.format("%s is attacking %s", this.player1.getName(), this.player2.getName()));
       this.player1.inflictDamageTo(this.player2);
       this.pause();
       
-      // Decide if the environment inflicts damage to the players
+      // TODO Decide if the environment inflicts damage to the players
       // Inflict damage
       this.show(String.format("The %s is damaging players", this.environment.name()));
       this.environment.inflictDamageTo(this.player1);
       this.environment.inflictDamageTo(this.player2);
       this.pause();
-      
-      // Determine if the game is over
+  }
+
+  boolean isGameOver() {
       if (this.player1.isDefeated()) {
         this.show(String.format("%s is defeated!", this.player1.getName()));
-        break;
+        return true;
       }
       else if (this.player2.isDefeated()) {
         this.show(String.format("%s is defeated!", this.player2.getName()));
-        break;
+        return true;
       }
-      
-      round++;
-    }
+      return false;
   }
 
   Creature selectPlayer(String name) {
