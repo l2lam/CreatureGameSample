@@ -1,5 +1,13 @@
 abstract class Creature implements IDamagable, IAttackable {
-  abstract public String getName();
+  String name;
+  public String getName() {
+    return this.name;
+  }
+
+  Creature(String name) {
+    this.name = name;
+  }
+
   abstract public String creatureType();
 
   int health = 100;

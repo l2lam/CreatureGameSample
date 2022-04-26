@@ -1,3 +1,4 @@
+import java.util.Random;
 class Game {
   Creature player1, player2;
   Environment environment;
@@ -37,8 +38,15 @@ class Game {
   void engageCombat() {
       // TODO Decide who gets to attack in this round
       // Attack
+    if (new Random().nextInt(10) < 5)
+    {
       this.show(String.format("%s is attacking %s", this.player1.getName(), this.player2.getName()));
       this.player1.inflictDamageTo(this.player2);
+    }
+    else {
+      this.show(String.format("%s is attacking %s", this.player2.getName(), this.player1.getName()));
+      this.player2.inflictDamageTo(this.player1);
+    }
       this.pause();
       
       // TODO Decide if the environment inflicts damage to the players
@@ -63,12 +71,16 @@ class Game {
 
   Creature selectPlayer(String name) {
     // TODO let user pick from a selection!
-    return new Dragon(name);
+    if (new Random().nextInt(10) < 5)
+      return new Dragon(name);
+    return new Troll(name);
   }
 
   Environment selectEnvironment() {
     // TODO random or let the user pick from a selection!
-    return new Desert();
+    if (new Random().nextInt(10) < 5)
+      return new Desert();
+    return new Ocean();
   }
 
   void updateGameStatus(int round) {
