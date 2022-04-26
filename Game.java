@@ -20,8 +20,7 @@ class Game {
 
     // Start the battle rounds, continue until one creture is defeated
     int round = 1;
-    boolean gameOver = false;
-    while (!gameOver) {
+    while (!this.isGameOver()) {
       // Display game status
       this.updateGameStatus(round);
       this.pause();
@@ -29,34 +28,46 @@ class Game {
       // Do a round of combat
       this.engageCombat();
 
-      // Determine if the game is over
-      if (this.isGameOver())
-        break;
-
+      // Move to the next round of combat
       round++;
     }
   }
 
   void engageCombat() {
-    // TODO Decide who gets to attack in this round
-    // Attack
-    if (new Random().nextInt(10) < 5) {
-      this.show(String.format("%s is attacking %s", this.player1.getName(), this.player2.getName()));
-      this.player1.inflictDamageTo(this.player2);
-    } else {
-      this.show(String.format("%s is attacking %s", this.player2.getName(), this.player1.getName()));
-      this.player2.inflictDamageTo(this.player1);
-    }
+    // Randomly decide who gets to attack in this round and perform the attack
+    if (new Random().nextInt(10) < 5)
+      this.performAttack(this.player1, this.player2);
+    else
+      this.performAttack(this.player2, this.player1);
     this.pause();
 
     // TODO Decide if the environment inflicts damage to the players
-    // Inflict damage
+    // Inflict damage by the environment
     this.show(String.format("The %s is damaging players", this.environment.name()));
     this.environment.inflictDamageTo(this.player1);
     this.environment.inflictDamageTo(this.player2);
     this.pause();
   }
 
+  // Perform an attack of p1 on p2
+  void performAttack(Creature p1, Creature p2) {
+    this.show(String.format("%s is attacking %s", p1.getName(), p2.getName()));
+    p1.inflictDamageTo(p2);
+    int random = new Random(3).nextInt();
+    switch (random) {
+      case 1:
+        this.show(String.format("%s says take that! %s says ahhh!", p1.getName(), p2.getName()));
+        break;
+      case 2:
+        this.show(String.format("%s takes damage and its health is down to %d!", p2.getName(), p2.getHealthLevel()));
+        break;
+      case 3:
+        this.show(String.format("%s says \"Darn you %d!\"", p2.getName(), p1.getName()));
+        break;
+    }
+  }
+
+  // Determine if the game is over
   boolean isGameOver() {
     if (this.player1.isDefeated()) {
       this.show(String.format("%s is defeated!", this.player1.getName()));
@@ -86,8 +97,8 @@ class Game {
     this.show(String.format("Player 1: %s - %d | Player 2: %s - %d",
         this.player1.creatureType(), this.player1.getHealthLevel(),
         this.player2.creatureType(), this.player2.getHealthLevel()));
-    this.show(String.format("Environment: %s", this.environment.name()));
     this.show("--------------");
+    this.show(String.format("Environment: %s", this.environment.name()));
     this.show(String.format("Round %d", round));
   }
 
