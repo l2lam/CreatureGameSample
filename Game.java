@@ -1,15 +1,16 @@
 import java.util.Random;
+
 class Game {
   Creature player1, player2;
   Environment environment;
-  
+
   void startGame() {
     // TODO: Show intro/instructions
-    
+
     // Select a creature (player 1)
     this.player1 = this.selectPlayer("Player 1");
     // Configure the creature
- 
+
     // Select an opopnent (player 2)
     this.player2 = this.selectPlayer("Player 2");
     // Configure the opponent
@@ -20,53 +21,51 @@ class Game {
     // Start the battle rounds, continue until one creture is defeated
     int round = 1;
     boolean gameOver = false;
-    while(!gameOver) {
+    while (!gameOver) {
       // Display game status
       this.updateGameStatus(round);
       this.pause();
 
       // Do a round of combat
       this.engageCombat();
-     
+
       // Determine if the game is over
-      if (this.isGameOver()) break;
-      
+      if (this.isGameOver())
+        break;
+
       round++;
     }
   }
 
   void engageCombat() {
-      // TODO Decide who gets to attack in this round
-      // Attack
-    if (new Random().nextInt(10) < 5)
-    {
+    // TODO Decide who gets to attack in this round
+    // Attack
+    if (new Random().nextInt(10) < 5) {
       this.show(String.format("%s is attacking %s", this.player1.getName(), this.player2.getName()));
       this.player1.inflictDamageTo(this.player2);
-    }
-    else {
+    } else {
       this.show(String.format("%s is attacking %s", this.player2.getName(), this.player1.getName()));
       this.player2.inflictDamageTo(this.player1);
     }
-      this.pause();
-      
-      // TODO Decide if the environment inflicts damage to the players
-      // Inflict damage
-      this.show(String.format("The %s is damaging players", this.environment.name()));
-      this.environment.inflictDamageTo(this.player1);
-      this.environment.inflictDamageTo(this.player2);
-      this.pause();
+    this.pause();
+
+    // TODO Decide if the environment inflicts damage to the players
+    // Inflict damage
+    this.show(String.format("The %s is damaging players", this.environment.name()));
+    this.environment.inflictDamageTo(this.player1);
+    this.environment.inflictDamageTo(this.player2);
+    this.pause();
   }
 
   boolean isGameOver() {
-      if (this.player1.isDefeated()) {
-        this.show(String.format("%s is defeated!", this.player1.getName()));
-        return true;
-      }
-      else if (this.player2.isDefeated()) {
-        this.show(String.format("%s is defeated!", this.player2.getName()));
-        return true;
-      }
-      return false;
+    if (this.player1.isDefeated()) {
+      this.show(String.format("%s is defeated!", this.player1.getName()));
+      return true;
+    } else if (this.player2.isDefeated()) {
+      this.show(String.format("%s is defeated!", this.player2.getName()));
+      return true;
+    }
+    return false;
   }
 
   Creature selectPlayer(String name) {
@@ -85,9 +84,10 @@ class Game {
 
   void updateGameStatus(int round) {
     this.show(String.format("Player 1: %s - %d | Player 2: %s - %d",
-                           this.player1.creatureType(), this.player1.getHealthLevel(),
-                           this.player2.creatureType(), this.player2.getHealthLevel()));
+        this.player1.creatureType(), this.player1.getHealthLevel(),
+        this.player2.creatureType(), this.player2.getHealthLevel()));
     this.show(String.format("Environment: %s", this.environment.name()));
+    this.show("--------------");
     this.show(String.format("Round %d", round));
   }
 
@@ -98,11 +98,11 @@ class Game {
   void pause() {
     this.pause(1000);
   }
+
   void pause(int milliseconds) {
-    try{
+    try {
       Thread.sleep(milliseconds);
-      }
-    catch(Exception e) {
+    } catch (Exception e) {
       this.show(e.toString());
     }
   }
