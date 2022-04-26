@@ -8,11 +8,11 @@ class Game {
     // TODO: Show intro/instructions
 
     // Select a creature (player 1)
-    this.player1 = this.selectPlayer("Player 1");
+    this.player1 = this.selectPlayer("Gregory");
     // Configure the creature
 
     // Select an opopnent (player 2)
-    this.player2 = this.selectPlayer("Player 2");
+    this.player2 = this.selectPlayer("Samantha");
     // Configure the opponent
 
     // Select an environment
@@ -53,16 +53,16 @@ class Game {
   void performAttack(Creature p1, Creature p2) {
     this.show(String.format("%s is attacking %s", p1.getName(), p2.getName()));
     p1.inflictDamageTo(p2);
-    int random = new Random(3).nextInt();
+    int random = new Random().nextInt(3);
     switch (random) {
-      case 1:
+      case 0:
         this.show(String.format("%s says take that! %s says ahhh!", p1.getName(), p2.getName()));
         break;
-      case 2:
+      case 1:
         this.show(String.format("%s takes damage and its health is down to %d!", p2.getName(), p2.getHealthLevel()));
         break;
-      case 3:
-        this.show(String.format("%s says \"Darn you %d!\"", p2.getName(), p1.getName()));
+      default:
+        this.show(String.format("%s says \"Darn you %s!\"", p2.getName(), p1.getName()));
         break;
     }
   }
@@ -94,9 +94,9 @@ class Game {
   }
 
   void updateGameStatus(int round) {
-    this.show(String.format("Player 1: %s - %d | Player 2: %s - %d",
-        this.player1.creatureType(), this.player1.getHealthLevel(),
-        this.player2.creatureType(), this.player2.getHealthLevel()));
+    this.show(String.format("%s: %s - %d | %s: %s - %d",
+        this.player1.getName(), this.player1.creatureType(), this.player1.getHealthLevel(),     
+        this.player2.getName(), this.player2.creatureType(), this.player2.getHealthLevel()));
     this.show("--------------");
     this.show(String.format("Environment: %s", this.environment.name()));
     this.show(String.format("Round %d", round));
